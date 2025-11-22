@@ -9,12 +9,10 @@ import java.util.logging.Logger;
 
 public class DBConnection {
     private static final Logger LOGGER = Logger.getLogger(DBConnection.class.getName());
-
-    // Read environment variables directly so the code does not require the dotenv library on the classpath
-    private static final String HOST_NAME = System.getenv().getOrDefault("DB_URL", "localhost");
+    private static final String HOST_NAME = "ticket-system-bayan.mysql.database.azure.com";
     private static final String DB_NAME = "userscred";
-    private static final String USERNAME = System.getenv().getOrDefault("DB_USER", "root");
-    private static final String PASSWORD = System.getenv().getOrDefault("DB_PASS", "");
+    private static final String USERNAME = "bayanadmin";
+    private static final String PASSWORD = "wdyzeqdn6R3iB7C";
 
     public static Connection getConnection() {
         Connection connection = null;
@@ -29,7 +27,7 @@ public class DBConnection {
             }
 
             // 2. Define the URL
-            String url = String.format("jdbc:mysql://%s:3306/%s?useSSL=true&verifyServerCertificate=false&requireSSL=false", 
+            String url = String.format("jdbc:mysql://%s:3306/%s?useSSL=true&verifyServerCertificate=false&requireSSL=false",
                                          HOST_NAME, DB_NAME);
 
             // 3. Connect
