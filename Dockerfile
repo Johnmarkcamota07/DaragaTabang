@@ -1,21 +1,24 @@
-# 1. Build
+# 1. Build Phase
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY . .
 
-# Debug: Show us the file structure in the logs so we can fix it if this fails
-RUN echo "Listing files in /app:" && ls -R /app
-
-# Build the app (skipping tests to save time)
+# Run Maven
 RUN mvn clean package -DskipTests
 
-# 2. Run
+# --- DEBUGGING COMMAND ---
+# This will print the location of every file to the Build Logs
+RUN echo "=============================" && \
+    echo "WHERE IS THE WAR FILE?" && \
+    find . -name "*.war" && \
+    echo "============================="
+# -------------------------
+
+# 2. Run Phase
 FROM tomcat:10.1-jdk21
 RUN rm -rf /usr/local/tomcat/webapps/*
 
-# IMPROVED COPY COMMAND:
-# This uses "find" logic to grab the WAR file from ANY 'target' folder it finds.
-# This fixes the issue whether the project is in the root or a subfolder.
+# Try to find the WAR file using a "Deep Search" (Wildcard)
 COPY --from=build /app/**/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
