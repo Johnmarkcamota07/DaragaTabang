@@ -21,7 +21,7 @@ public class TestConnectionServlet extends HttpServlet {
         out.println("<h1>Connection Test Result</h1>");
 
         Connection conn = DBConnection.getConnection();
-
+//hello
         try {
             if (conn != null && !conn.isClosed()) {
                 out.println("<h2 style='color:green;'>HELLO! Database Connected Successfully!</h2>");
