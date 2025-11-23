@@ -1,21 +1,25 @@
+# Use Java 21
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copy the entire project
+# Copy everything
 COPY . .
 
-# IMPORTANT: Walk into the folder where pom.xml is
-WORKDIR /app/bayan_ticket
+# --- DEBUGGING STEP ---
+# This prints all files to the logs so we can see where pom.xml is
+RUN echo "listing files..." && ls -R
+# ----------------------
 
-# Build
+# TRY OPTION A: Build from Root (Most likely fix)
+# If your pom.xml is in the main folder, this works.
 RUN mvn clean package -DskipTests
 
-# Run
+# Run with Tomcat
 FROM tomcat:10.1-jdk21
 RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Copy the WAR file (Path includes the subfolder)
-COPY --from=build /app/bayan_ticket/target/*.war /usr/local/tomcat/webapps/ROOT.war
+# Find the WAR file automatically (wildcard)
+COPY --from=build /app/**/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
