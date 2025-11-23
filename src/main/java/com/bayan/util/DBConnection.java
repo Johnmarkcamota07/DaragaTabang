@@ -7,10 +7,11 @@ import java.util.Properties;
 
 public class DBConnection {
 
-    private static final String HOST_NAME = "ticket-system-bayan.mysql.database.azure.com";
-    private static final String DB_NAME = "userscred";
-    private static final String USERNAME = "bayanadmin";
-    private static final String PASSWORD = "wdyzeqdn6R3iB7C"; // Don't forget to put your password back!
+    private static final String HOST_NAME = "turntable.proxy.rlwy.net";
+    private static final String HOST_PORT = "50796";
+    private static final String DB_NAME = "railway";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "YcDRNfZuaakoIenZuRQneKWwFtHXawTk"; //
 
     // 1. Create a static variable to hold the ONE active connection
     private static Connection instance = null;
@@ -28,8 +29,8 @@ public class DBConnection {
                     return null;
                 }
 
-                String url = String.format("jdbc:mysql://%s:3306/%s?useSSL=true&verifyServerCertificate=false&requireSSL=false",
-                        HOST_NAME, DB_NAME);
+                String url = String.format("jdbc:mysql://%s:%s/%s?useSSL=true&verifyServerCertificate=false&requireSSL=false",
+                        HOST_NAME,HOST_PORT, DB_NAME);
 
                 Properties props = new Properties();
                 props.put("user", USERNAME);
@@ -39,7 +40,7 @@ public class DBConnection {
                 System.out.println(">>> NEW CONNECTION CREATED (This takes time) <<<");
             } else {
                 // 3. If it exists, just return the old one (Instant!)
-                System.out.println(">>> REUSING OLD CONNECTION (Instant!) <<<");
+                System.out.println(">>> REUSING OLD CONNECTION<<<");
             }
 
         } catch (SQLException e) {
